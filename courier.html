@@ -1,0 +1,9 @@
+<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>وصّل - المناديب</title><link rel="manifest" href="manifest-courier.json"><meta name="theme-color" content="#0b3d91"><link rel="icon" href="logo.svg"><link rel="stylesheet" href="style.css"></head><body style="padding:0"><header><img src="logo.svg" alt=""><div><b>وصّل - المناديب</b><small>أوردراتك اليوم</small></div></header><main id="app"></main><script src="core.js"></script><script>
+let me=+localStorage.wcour||0;
+window.mv=async(id,st)=>{try{await api('shipments?id=eq.'+encodeURIComponent(id),'PATCH',{st});await load();r()}catch(e){alert('تعذر التحديث')}};
+function r(){if(!D.cour.length){A.innerHTML='<div class="card">جاري التحميل...</div>';return}
+if(!D.cour.find(x=>x.id==me))me=D.cour[0].id;
+const l=D.ship.filter(s=>s.cour==me),act=l.filter(s=>s.st!='done'&&s.st!='ret'),held=l.filter(s=>s.st=='done').reduce((a,s)=>a+(+s.cod),0);
+A.innerHTML=`<div class="card">المندوب (للتجربة)<select onchange="me=+this.value;localStorage.wcour=me;r()">${opts(D.cour,me)}</select></div>
+<div class="grid"><div class="card"><div class="k">${act.length}</div><div class="l">أوردرات عليك</div></div><div class="card"><div class="k">${held}</div><div class="l">تحصيل معاك (ج)</div></div></div><h2>الأوردرات</h2>`+(l.length?l.map(s=>{const nx={new:'pick',pick:'out',out:'done'}[s.st];return `<div class="card"><div class="row"><b>${s.id}</b>${tag(s.st)}</div><div>${s.to_name} - ${s.gov}</div><div class="m"><a href="tel:${s.phone}">${s.phone}</a> | حصّل: ${s.cod} ج | من: ${s.cust}</div><div style="margin-top:8px">${nx?`<button class="s" onclick="mv('${s.id}','${nx}')">← ${ST[nx][0]}</button> <button class="s" onclick="mv('${s.id}','ret')">مرتجع</button>`:''}</div></div>`}).join(''):'<div class="card">مفيش أوردرات محملة عليك</div>')}
+start(r);</script></body></html>
