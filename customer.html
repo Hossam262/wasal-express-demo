@@ -1,0 +1,9 @@
+<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>وصّل - العملاء</title><link rel="manifest" href="manifest-customer.json"><meta name="theme-color" content="#0b3d91"><link rel="icon" href="logo.svg"><link rel="stylesheet" href="style.css"></head><body style="padding:0"><header><img src="logo.svg" alt=""><div><b>وصّل - العملاء</b><small>اطلب وتابع شحناتك</small></div></header><main id="app"></main><script src="core.js"></script><script>
+let me=+localStorage.wcust||0;
+function r(){if(!D.cust.length){A.innerHTML='<div class="card">جاري التحميل...</div>';return}
+if(!D.cust.find(x=>x.id==me))me=D.cust[0].id;const c=D.cust.find(x=>x.id==me),l=D.ship.filter(s=>s.cust==c.name);
+A.innerHTML=`<div class="card">الحساب (للتجربة)<select onchange="me=+this.value;localStorage.wcust=me;r()">${opts(D.cust,me)}</select></div>
+<div class="card"><b>اطلب شحنة</b><br>اسم المستلم<input id="to">موبايل المستلم<input id="ph" type="tel">المحافظة<select id="gv">${GOV.map(g=>`<option>${g}</option>`).join('')}</select>مبلغ التحصيل (ج)<input id="cod" type="number"><button class="p" onclick="add()">إرسال الطلب</button></div>
+<h2>شحناتك (${l.length})</h2>`+l.map(s=>`<div class="card"><div class="row"><b>${s.id}</b>${tag(s.st)}</div><div>${s.to_name} - ${s.gov}</div><div class="m">تحصيل ${s.cod} ج | شحن ${s.fee} ج | المندوب: ${s.cour?cn(s.cour):'لسه ما اتحددش'}</div></div>`).join('')}
+window.add=async()=>{const to=$('#to').value,ph=$('#ph').value;if(!to||!ph)return alert('اكتب اسم المستلم والموبايل');const c=D.cust.find(x=>x.id==me);try{await api('shipments','POST',{id:'WS-'+Date.now().toString().slice(-6),cust:c.name,to_name:to,phone:ph,gov:$('#gv').value,cod:+$('#cod').value||0,fee:40,st:'new'});await load();r()}catch(e){alert('تعذر الإرسال')}};
+start(r);</script></body></html>
